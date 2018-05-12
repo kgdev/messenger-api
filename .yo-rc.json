@@ -1,0 +1,10 @@
+{
+  "generator-openapi-repo": {
+    "importExistingSpec": false,
+    "name": "Messenger",
+    "repo": "kgdev/messenger-api",
+    "splitSpec": true,
+    "samples": true,
+    "installSwaggerUI": true
+  }
+}
