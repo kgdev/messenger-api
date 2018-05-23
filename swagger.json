@@ -1,0 +1,648 @@
+{
+  "swagger": "2.0",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "host": "example.com",
+  "basePath": "/api/v1",
+  "info": {
+    "description": "This is an **example** API to demontstrate features of OpenAPI specification\n# Introduction\nThis specification is intended to to be a good starting point for describint your API in \n[OpenAPI/Swagger format](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md).\nIt also demonstrates features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo) tool and \n[ReDoc](https://github.com/Rebilly/ReDoc) documentation engine. So beyond the standard OpenAPI syntax we use a few \n[vendor extensions](https://github.com/Rebilly/ReDoc/blob/master/docs/redoc-vendor-extensions.md).\n\n# OpenAPI Specification\nThe goal of The OpenAPI Specification is to define a standard, language-agnostic interface to REST APIs which\nallows both humans and computers to discover and understand the capabilities of the service without access to source\ncode, documentation, or through network traffic inspection. When properly defined via OpenAPI, a consumer can \nunderstand and interact with the remote service with a minimal amount of implementation logic. Similar to what\ninterfaces have done for lower-level programming, OpenAPI removes the guesswork in calling the service.\n",
+    "version": "1.0.0",
+    "title": "Example.com",
+    "termsOfService": "https://example.com/terms/",
+    "contact": {
+      "email": "contact@example.com",
+      "url": "http://example.com/contact"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "x-logo": {
+      "url": "https://apis.guru/openapi-template/logo.png"
+    }
+  },
+  "externalDocs": {
+    "description": "Find out how to create Github repo for your OpenAPI spec.",
+    "url": "https://github.com/Rebilly/generator-openapi-repo"
+  },
+  "produces": [
+    "application/json",
+    "application/xml",
+    "text/csv"
+  ],
+  "consumes": [
+    "application/json",
+    "application/xml"
+  ],
+  "tags": [
+    {
+      "name": "Echo",
+      "description": "Example echo operations"
+    },
+    {
+      "name": "User",
+      "description": "Operations about user"
+    },
+    {
+      "name": "Channel",
+      "description": "Operations about channel"
+    },
+    {
+      "name": "Message",
+      "description": "Operations about message"
+    }
+  ],
+  "securityDefinitions": {
+    "main_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "http://example.com/api/oauth/dialog",
+      "flow": "implicit",
+      "scopes": {
+        "read:users": "read users info",
+        "write:users": "modify or remove users"
+      }
+    },
+    "api_key": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "api_key"
+    },
+    "basic_auth": {
+      "type": "basic"
+    }
+  },
+  "paths": {
+    "/channels": {
+      "post": {
+        "tags": [
+          "Channel"
+        ],
+        "summary": "Create Channel",
+        "description": "Create a direct, group or broadcast channel",
+        "operationId": "createChannel",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Channel object that is to be created",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "type"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "org_id": {
+                  "type": "string",
+                  "description": "Id of the organization binded to this channel"
+                },
+                "project_id": {
+                  "type": "string",
+                  "description": "Id of the unity project binded to this channel"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Channel"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Channel"
+        ],
+        "summary": "Get a list of channels",
+        "description": "Get channels within an organization (when org_id is valid) or get community channels (when org_id is empty)",
+        "operationId": "getChannels",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "query",
+            "description": "Organization Id",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Channel"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/channels/{channel_id}": {
+      "get": {
+        "tags": [
+          "Channel"
+        ],
+        "summary": "Get a channel object",
+        "description": "Get a channel object",
+        "operationId": "getChannel",
+        "parameters": [
+          {
+            "name": "channel_id",
+            "in": "path",
+            "type": "string",
+            "description": "channel Id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Channel"
+            }
+          }
+        }
+      }
+    },
+    "/channels/{channel_id}/members": {
+      "post": {
+        "tags": [
+          "Channel"
+        ],
+        "summary": "Add user(s) to a channel",
+        "description": "Add user(s) to a channel",
+        "operationId": "addChannelMember",
+        "parameters": [
+          {
+            "name": "channel_id",
+            "in": "path",
+            "type": "string",
+            "description": "channel Id",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Add channel member request body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "user_ids",
+                "role"
+              ],
+              "properties": {
+                "user_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "role": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/channels/{channel_id}/members/{user_id}": {
+      "delete": {
+        "tags": [
+          "Channel"
+        ],
+        "summary": "Remove a user from a channel",
+        "description": "Remove a user from a channel",
+        "operationId": "removeChannelMember",
+        "parameters": [
+          {
+            "name": "channel_id",
+            "in": "path",
+            "type": "string",
+            "description": "channel Id",
+            "required": true
+          },
+          {
+            "name": "user_id",
+            "in": "path",
+            "type": "string",
+            "description": "user Id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/channels/{channel_id}/messages": {
+      "get": {
+        "tags": [
+          "Message"
+        ],
+        "summary": "Get a list of messages",
+        "description": "Get messages in a channel",
+        "operationId": "getMessages",
+        "parameters": [
+          {
+            "name": "channel_id",
+            "in": "path",
+            "type": "string",
+            "description": "Channel Id",
+            "required": true
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "integer",
+            "description": "The number of messages per page. The default limit value is 50.",
+            "default": 50,
+            "required": false
+          },
+          {
+            "name": "before",
+            "in": "query",
+            "type": "string",
+            "description": "Get messages before this message Id",
+            "required": false
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "type": "string",
+            "description": "Get messages after this message Id",
+            "required": false
+          },
+          {
+            "name": "around",
+            "in": "query",
+            "type": "string",
+            "description": "Get messages around this message Id",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Message"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/echo": {
+      "post": {
+        "tags": [
+          "Echo"
+        ],
+        "summary": "Echo test",
+        "description": "Receive the exact message you've sent",
+        "operationId": "echo",
+        "parameters": [
+          {
+            "name": "message",
+            "in": "body",
+            "description": "Echo payload",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Hello world!"
+            }
+          }
+        ],
+        "security": [
+          {
+            "api_key": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": "Hello world!"
+            },
+            "schema": {
+              "type": "string"
+            },
+            "headers": {
+              "X-Rate-Limit": {
+                "type": "integer",
+                "format": "int32",
+                "description": "calls per hour allowed by the user"
+              },
+              "X-Expires-After": {
+                "type": "string",
+                "format": "date-time",
+                "description": "date in UTC when token expires"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/messages": {
+      "post": {
+        "tags": [
+          "Message"
+        ],
+        "summary": "Post a message",
+        "description": "Post a message",
+        "operationId": "createMessage",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Message object that is to be created",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "channel_id",
+                "content"
+              ],
+              "properties": {
+                "channel_id": {
+                  "type": "string"
+                },
+                "content": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Message"
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get user(s)",
+        "description": "Get user(s)",
+        "operationId": "getUser",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Get uesrs request body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "user_ids"
+              ],
+              "properties": {
+                "user_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{username}": {
+      "parameters": [
+        {
+          "name": "pretty_print",
+          "in": "query",
+          "description": "Pretty print response",
+          "type": "boolean"
+        }
+      ],
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get user by user name",
+        "description": "Some description of the operation. \nYou can use `markdown` here.\n",
+        "operationId": "getUserByName",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The name that needs to be fetched",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "with_email",
+            "in": "query",
+            "description": "Filter users without email",
+            "type": "boolean"
+          }
+        ],
+        "security": [
+          {
+            "main_auth": [
+              "read:users"
+            ]
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/User"
+            },
+            "examples": {
+              "application/json": {
+                "username": "user1",
+                "email": "user@example.com"
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Updated user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "updateUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The name that needs to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "security": [
+          {
+            "main_auth": [
+              "write:users"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid user supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Channel": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Channel ID",
+          "type": "string",
+          "example": "045e50634b000000"
+        },
+        "type": {
+          "description": "Type of a channel",
+          "type": "string",
+          "example": "broadcast"
+        },
+        "discoverable": {
+          "description": "Whether the channel can be discovered by users or not",
+          "type": "boolean"
+        },
+        "icon_url": {
+          "description": "Url of the channel's icon",
+          "type": "string"
+        },
+        "name": {
+          "description": "Channel name",
+          "type": "string"
+        },
+        "org_id": {
+          "description": "Id of the organization binded to this channel",
+          "type": "string"
+        },
+        "project_id": {
+          "description": "Id of the unity project binded to this channel",
+          "type": "string"
+        }
+      }
+    },
+    "Email": {
+      "description": "User email address",
+      "type": "string",
+      "format": "email",
+      "example": "john.smith@example.com"
+    },
+    "Message": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Message ID",
+          "type": "string",
+          "example": "045e50634b000000"
+        },
+        "channel_id": {
+          "description": "channel id",
+          "type": "string"
+        },
+        "author_id": {
+          "type": "string"
+        },
+        "content": {
+          "description": "content of a message",
+          "type": "string"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "full_name": {
+          "description": "User full name",
+          "type": "string"
+        },
+        "icon_url": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
