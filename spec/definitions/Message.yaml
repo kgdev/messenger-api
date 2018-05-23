@@ -1,0 +1,14 @@
+type: object
+properties:
+  id:
+    description: Message ID
+    type: string
+    example: 045e50634b000000
+  channel_id:
+    description: channel id
+    type: string
+  author_id:
+    type: string
+  content:
+    description: content of a message
+    type: string

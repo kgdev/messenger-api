@@ -1,0 +1,21 @@
+delete:
+  tags:
+    - Channel 
+  summary: Remove a user from a channel
+  description: Remove a user from a channel
+  operationId: removeChannelMember
+  parameters:
+    - name: channel_id
+      in: path
+      type: string
+      description: channel Id
+      required: true
+    - name: user_id
+      in: path
+      type: string
+      description: user Id
+      required: true
+
+  responses:
+    '204':
+      description: 'OK'

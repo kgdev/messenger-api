@@ -1,0 +1,18 @@
+get:
+  tags:
+    - Channel
+  summary: Get a channel object
+  description: Get a channel object
+  operationId: getChannel
+  parameters:
+     - name: channel_id
+       in: path
+       type: string
+       description: channel Id
+       required: true
+         
+  responses:
+    '200':
+      description: 'OK'
+      schema:
+        $ref: '#/definitions/Channel'

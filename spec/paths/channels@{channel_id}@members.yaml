@@ -1,0 +1,32 @@
+post:
+  tags:
+    - Channel 
+  summary: Add user(s) to a channel
+  description: Add user(s) to a channel
+  operationId: addChannelMember
+  parameters:
+    - name: channel_id
+      in: path
+      type: string
+      description: channel Id
+      required: true  
+    - name: body
+      in: body
+      description: Add channel member request body
+      required: true
+      schema:
+        type: object
+        required:
+          - user_ids
+          - role
+        properties:
+          user_ids:
+             type: array
+             items: 
+               type: string
+          role:
+            type: string
+
+  responses:
+    '201':
+      description: 'OK'
