@@ -69,6 +69,10 @@ tags:
     description: Example echo operations
   - name: User
     description: Operations about user
+  - name: Channel
+    description: Operations about channel
+  - name: Message
+    description: Operations about message
 # Security scheme definitions that can be used across the specification.
 securityDefinitions:
   main_auth: # security definition name (you can name it as you want)

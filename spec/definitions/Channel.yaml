@@ -1,0 +1,25 @@
+type: object
+properties:
+  id:
+    description: Channel ID
+    type: string
+    example: 045e50634b000000
+  type:
+    description: Type of a channel
+    type: string
+    example: broadcast
+  discoverable:
+    description: Whether the channel can be discovered by users or not
+    type: boolean
+  icon_url:
+    description: Url of the channel's icon
+    type: string
+  name:
+    description: Channel name
+    type: string
+  org_id:
+    description: Id of the organization binded to this channel
+    type: string
+  project_id:
+    description: Id of the unity project binded to this channel
+    type: string

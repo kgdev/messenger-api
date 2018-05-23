@@ -1,0 +1,41 @@
+get:
+  tags:
+    - Message 
+  summary: Get a list of messages
+  description: Get messages in a channel
+  operationId: getMessages
+  parameters:
+    - name: channel_id
+      in: path
+      type: string
+      description: Channel Id
+      required: true
+    - name: limit
+      in: query
+      type: integer
+      description: The number of messages per page. The default limit value is 50.
+      default: 50
+      required: false
+    - name: before
+      in: query
+      type: string
+      description: Get messages before this message Id
+      required: false
+    - name: after
+      in: query
+      type: string
+      description: Get messages after this message Id
+      required: false
+    - name: around
+      in: query
+      type: string
+      description: Get messages around this message Id
+      required: false
+
+  responses:
+    '200':
+      description: 'OK'
+      schema:
+        type: array
+        items:
+          $ref: '#/definitions/Message'

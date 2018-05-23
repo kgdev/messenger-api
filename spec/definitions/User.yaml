@@ -1,19 +1,9 @@
 type: object
 properties:
-  username:
-    description: User supplied username
+  id:
     type: string
-    minLength: 4
-    example: John78
-  firstName:
-    description: User first name
+  full_name:
+    description: User full name
     type: string
-    minLength: 1
-    example: John
-  lastName:
-    description: User last name
+  icon_url:
     type: string
-    minLength: 1
-    example: Smith
-  email:
-    $ref: '#/definitions/Email'

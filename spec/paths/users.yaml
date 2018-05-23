@@ -1,0 +1,28 @@
+post:
+  tags:
+    - User
+  summary: Get user(s)
+  description: Get user(s)
+  operationId: getUser
+  parameters:
+    - name: body
+      in: body
+      description: Get uesrs request body
+      required: true
+      schema:
+        type: object
+        required:
+          - user_ids
+        properties:
+          user_ids:
+             type: array
+             items: 
+               type: string
+         
+  responses:
+    '200':
+      description: 'OK'
+      schema:
+        type: array
+        items:
+          $ref: '#/definitions/User'

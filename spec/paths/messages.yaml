@@ -1,0 +1,28 @@
+
+post:
+  tags:
+    - Message
+  summary: Post a message
+  description: Post a message
+  operationId: createMessage
+  parameters:
+     - name: body
+       in: body
+       description: Message object that is to be created
+       required: true
+       schema:
+         type: object
+         required:
+           - channel_id
+           - content
+         properties:
+           channel_id:
+             type: string
+           content:
+             type: string
+
+  responses:
+    '200':
+      description: 'OK'
+      schema:
+        $ref: '#/definitions/Message'

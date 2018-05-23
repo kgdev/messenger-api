@@ -1,0 +1,54 @@
+
+post:
+  tags:
+    - Channel
+  summary: Create Channel
+  description: Create a direct, group or broadcast channel
+  operationId: createChannel
+  parameters:
+     - name: body
+       in: body
+       description: Channel object that is to be created
+       required: true
+       schema:
+         type: object
+         required:
+           - type
+         properties:
+           type:
+             type: string
+           name:
+             type: string
+           description:
+             type: string
+           org_id:
+             type: string
+             description: Id of the organization binded to this channel
+           project_id:
+             type: string
+             description: Id of the unity project binded to this channel
+
+  responses:
+    '200':
+      description: 'OK'
+      schema:
+        $ref: '#/definitions/Channel'
+get:
+  tags:
+    - Channel
+  summary: Get a list of channels
+  description: Get channels within an organization (when org_id is valid) or get community channels (when org_id is empty)
+  operationId: getChannels
+  parameters:
+    - name: org_id
+      in: query
+      description: Organization Id
+      required: false
+      type: string
+  responses:
+    '200':
+      description: 'OK'
+      schema:
+        type: array
+        items:
+          $ref: '#/definitions/Channel'  
